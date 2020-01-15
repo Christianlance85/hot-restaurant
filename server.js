@@ -12,26 +12,30 @@ app.use(express.json());
 
 //sends user to home page
 app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "home.html"));
+    res.sendFile(path.join(__dirname, "index.html"));
   });
 //sends user to table page
-app.get("/table", function(req, res) {
-    res.sendFile(path.join(__dirname, "table.html"));
+app.get("/tables", function(req, res) {
+    res.sendFile(path.join(__dirname, "tables.html"));
   });
 //sends user to reservations page
-app.get("/reservations", function(req, res) {
-    res.sendFile(path.join(__dirname, "reservations.html"));
+app.get("/reserve", function(req, res) {
+    res.sendFile(path.join(__dirname, "reservation.html"));
   });
 
 
 app.get("/api/tables", function(req, res) {
-    return res.json(tables);
-  });
+  return res.json(tables);
+});
+
+app.get("/api/waitlis", function(req, res) {
+  return res.json(waitlist);
+});
 
 
 class Table{
     constructor(name,id,email,phone){
-        this.name = name;
+        this.name = name; 
         this.id = id;
         this.email = email;
         this.phone = phone;
@@ -42,20 +46,28 @@ let tables = [
 
 ];
 
+let waitlist = [
 
+];
 
 app.post("/api/tables", function(req, res) {
     tableNum++;
+    var newTable = req.body;
+    newTable.routeName = newTable.name.replace(/\s+/g, "").toLowerCase();
+    res.json(newTable);
+
     if(tableNum <= 5){
-        var newTable = req.body;
-    
-        newTable.routeName = newTable.name.replace(/\s+/g, "").toLowerCase();
-    
-        tables.push(newTable);
-    
-        res.json(newTable);
+      tables.push(newTable);
     }
   });
+
+app.post("/api/waitlist", function(req, res) {
+  tableNum++;
+  var newTable = req.body;
+  newTable.routeName = newTable.name.replace(/\s+/g, "").toLowerCase();
+  res.json(newTable);
+  waitlist.push(newTable);
+});
 
 app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
