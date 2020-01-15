@@ -10,6 +10,44 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <script>
+
+
+        class newReservation {
+        constructor (name,phoneNumber,email,uniqueID){
+      
+      this.name= name;
+      this.phoneNumber= phoneNumber;
+      this.email= email;
+      this.uniqueID= uniqueID;
+      }
+    };
+      
+      function submit(){
+      
+      document.getElementById("reserve-name").innerhtml.push(newReservation.name);
+      document.getElementById("reserve-phone").innerhtml.push(phoneNumber);
+      document.getElementById("reserve-email").innerhtml.push(email);
+      document.getElementById("reserve-unique-id").innerhtml.push(uniqueID)
+      
+      };
+      
+      $.post("tables.json", newReservation,
+      function(data) {
+       
+        if (data) {
+          alert("Yay! You are officially booked!");
+        }
+        else {
+          alert("Sorry you are on the wait list");
+        }
+        $("#reserve-name").val("");
+        $("#reserve-phone").val("");
+        $("#reserve-email").val("");
+        $("#reserve-unique-id").val("");
+    });
+      
+        </script>
   <div class="container">
     <div class="jumbotron">
       <h1 class="text-center">
@@ -18,11 +56,11 @@
       <h2 class="text-center">Make your reservation</h2>
       <br>
       <div class="text-center">
-        <a href="/tables">
+        <a href="tables.html">
           <button class="btn btn-lg btn-primary">
             <span class="fa fa-list-alt"></span> View Tables</button>
         </a>
-        <a href="/">
+        <a href="index.html">
           <button class="btn btn-lg btn-default">
             <span class="fa fa-home"></span>
           </button>
@@ -54,7 +92,7 @@
                 <label for="reserve-unique-id">Unique ID</label>
                 <input type="text" class="form-control" id="reserve-unique-id">
               </div>
-              <button type="submit" class="btn btn-primary submit">Submit</button>
+              <button type="submit" onclick="submit()"class="btn btn-primary submit">Submit</button>
             </form>
           </div>
         </div>
