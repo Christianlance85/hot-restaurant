@@ -4,7 +4,7 @@ var path = require("path");
 let tableNum =  0;
 
 var app = express();
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -28,7 +28,7 @@ app.get("/api/tables", function(req, res) {
   return res.json(tables);
 });
 
-app.get("/api/waitlis", function(req, res) {
+app.get("/api/waitlist", function(req, res) {
   return res.json(waitlist);
 });
 
@@ -55,9 +55,16 @@ app.post("/api/tables", function(req, res) {
     var newTable = req.body;
     newTable.routeName = newTable.name.replace(/\s+/g, "").toLowerCase();
     res.json(newTable);
+    res.post(tables);
 
-    if(tableNum <= 5){
-      tables.push(newTable);
+
+    if (tables.length < 5) {
+      table.push(req.body);
+      res.json(true);
+    }
+    else {
+      waitlist.push(req.body);
+      res.json(false);
     }
   });
 
